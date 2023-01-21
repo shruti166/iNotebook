@@ -7,9 +7,16 @@ require("dotenv").config();
 
 const userRouter = express.Router();
 
+async function userAlreadyExisted() {
+    let user = await User.findOne({ email });
+    return user != null;
+}
 userRouter.post("/register", (req, res) => {
   const { name, email, password, age } = req.body;
-
+  if(userAlreadyExisted) {
+      
+      res.send("User already registered");
+  }
   try {
     bcrypt.hash(password, 5, async (err, secPass) => {
       if (err) {
@@ -26,26 +33,25 @@ userRouter.post("/register", (req, res) => {
   }
 });
 
-
-userRouter.post("/login", async(req, res) => {
-    const {email, password} = req.body;
-    try {
-        const user = await User.find({email});
-        const hashed_pass=user[0].password
-        if(user.length>0){
-            bcrypt.compare(password, hashed_pass, (err, result) => {
-                if(result){
-                    const token = jwt.sign({userID:user[0]._id}, kk);
-                    res.send({"msg":"Login Successfull","token":token})
-                } else {
-                    res.send("Wrong Credntials")
-                }
-            });
+userRouter.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.find({ email });
+    const hashed_pass = user[0].password;
+    if (user.length > 0) {
+      bcrypt.compare(password, hashed_pass, (err, result) => {
+        if (result) {
+          const token = "abc";
+          res.send({ msg: "Login Successfull", token: token });
         } else {
-            res.send("Wrong Credntials")
+          res.send("Wrong Credntials");
         }
-    } catch(err) {
-        console.log(err);
+      });
+    } else {
+      res.send("Wrong Credntials");
     }
-})
+  } catch (err) {
+    console.log(err);
+  }
+});
 module.exports = userRouter;

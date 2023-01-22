@@ -18,6 +18,6 @@ const NotesSchema = mongoose.Schema({
         required: true
     }
 })
+const NoteModel = mongoose.model("notes", NotesSchema)
 
-
-module.exports = mongoose.model("notes", NotesSchema);
+module.exports = NoteModel ;

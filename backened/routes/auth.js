@@ -17,6 +17,8 @@ userRouter.post("/register", (req, res) => {
       
       res.send("User already registered");
   }
+  //salt round : no of rounds of hashing
+  //err : error encountered while hashing
   try {
     bcrypt.hash(password, 5, async (err, secPass) => {
       if (err) {

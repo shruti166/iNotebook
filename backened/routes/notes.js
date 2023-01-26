@@ -30,33 +30,30 @@ notesRouter.patch("/update/:id", async(req, res) => {
     const id = req.params.id;
     const note = await NoteModel.findOne({"_id" : id});
     const userId = note.userId;
-    const editorId = req.params.userId;
+    const editorId = req.body.userId;
+    console.log(userId + " " + editorId)
 
     if(userId != editorId){
         res.send("You are not authorised to perform this action")
     } else {
         await NoteModel.findByIdAndUpdate({"_id" : id},payload);
-        res.send({"msg": "note has been updated"}, note)
+        res.send("note has been updated");
     }
 })
 
 
-notesRouter.delete("/delete/:id",async (req,res)=>{
-    const id=req.params.id 
-    const note=await NoteModel.findOne({"_id":id})
-    const userID_in_note=note.userID
-    const userID_making_req=req.body.userID
-    try{
-        if(userID_making_req!==userID_in_note){
-            res.send({"msg":"You are not authorized"})
-        } else {
-            await NoteModel.findByIdAndDelete({"_id":id})
-            res.send("Deleted the note")
-        }
-        
-    }catch(err){
-        console.log(err)
-        res.send({"msg":"Something went wrong"})
+notesRouter.delete("/delete/:id", async(req, res) => {
+    const id = req.params.body;
+    const note = await NoteModel.findOne({"_id" : id});
+    const userId = note.userId;
+    const editorId = req.body.userId;
+
+    if(userId != editorId) {
+        res.send("You are not authorised to perform this action")
+    } else {
+        await NoteModel.findOneAndDelete({"_id" : id})
     }
 })
+
+
 module.exports = notesRouter ;

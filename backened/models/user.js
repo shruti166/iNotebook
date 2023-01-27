@@ -11,12 +11,10 @@ const UserSchema = new Schema({
   },
   password: {
     type: String,
-    
   },
   age: {
     type: Number,
     required: true,
-    
   },
 });
 module.exports = mongoose.model("user", UserSchema);

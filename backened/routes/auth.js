@@ -2,21 +2,20 @@ const express = require("express");
 const User = require("../models/User");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
-require("dotenv").config();
+
+// require("dotenv").config();
 
 const userRouter = express.Router();
 
-async function userAlreadyExisted() {
-    let user = await User.findOne({ email });
-    return user != null;
-}
-userRouter.post("/register", (req, res) => {
+// async function userAlreadyExisted() {
+//   let user = await User.findOne({ email });
+//   return user != null;
+// }
+userRouter.post("/register", async (req, res) => {
   const { name, email, password, age } = req.body;
-  if(userAlreadyExisted) {
-      
-      res.send("User already registered");
-  }
+  // if (userAlreadyExisted) {
+  //   res.send("User already registered");
+  // }
   //salt round : no of rounds of hashing
   //err : error encountered while hashing
   try {
@@ -26,7 +25,7 @@ userRouter.post("/register", (req, res) => {
       } else {
         const user = new User({ name, email, password: secPass, age });
         await user.save();
-        res.send(user);
+        res.send("Registered");
       }
     });
   } catch (err) {

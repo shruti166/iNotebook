@@ -12,18 +12,18 @@ const userRouter = express.Router();
 //   return user != null;
 // }
 userRouter.post("/register", async (req, res) => {
-  const { name, email, password, age } = req.body;
+  const { name, email, pass, age } = req.body;
   // if (userAlreadyExisted) {
   //   res.send("User already registered");
   // }
   //salt round : no of rounds of hashing
   //err : error encountered while hashing
   try {
-    bcrypt.hash(password, 5, async (err, secPass) => {
+    bcrypt.hash(pass, 5, async (err, secPass) => {
       if (err) {
         console.log(err);
       } else {
-        const user = new User({ name, email, password: secPass, age });
+        const user = new User({ name, email, pass: secPass, age });
         await user.save();
         res.send("Registered");
       }
@@ -35,12 +35,12 @@ userRouter.post("/register", async (req, res) => {
 });
 
 userRouter.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, pass } = req.body;
   try {
     const user = await User.find({ email });
-    const hashed_pass = user[0].password;
+    const hashed_pass = user[0].pass;
     if (user.length > 0) {
-      bcrypt.compare(password, hashed_pass, (err, result) => {
+      bcrypt.compare(pass, hashed_pass, (err, result) => {
         if (result) {
           const token = "abc";
           res.send({ msg: "Login Successfull", token: token });

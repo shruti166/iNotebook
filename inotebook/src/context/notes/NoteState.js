@@ -25,9 +25,18 @@ export default function NoteState(props) {
 
 ]
 
-const [notes, setNotes] = useState(initialData)
+const [notes, setNotes] = useState(initialData);
 
-  return <NoteContext.Provider value= {{notes, setNotes}}>
+const addNotes = (title, category, note) => {
+    const newnote = {
+        "title" : title,
+        "category": category,
+        "note": note
+    }
+    setNotes(notes.concat(newnote));
+}
+
+  return <NoteContext.Provider value= {{notes, setNotes, addNotes}}>
         {props.children}
     </NoteContext.Provider>
  

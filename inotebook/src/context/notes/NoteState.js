@@ -1,14 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import NoteContext from "./NoteContext";
 
 
 export default function NoteState(props) {
-    const state = {
-       name : "shruti",
-       age: "24"
-    }
+    const initialData = [
+        {
+       title : "shruti",
+       note: "My first Note",
+       category: "general",
+       userId: "as"
+    },
+    {
+        title : "shruti",
+        note: "My first Note",
+        category: "general",
+        userId: "as"
+     },
+     {
+        title : "shruti",
+        note: "My first Note",
+        category: "general",
+        userId: "as"
+     }
 
-  return <NoteContext.Provider value= {{state}}>
+]
+
+const [notes, setNotes] = useState(initialData)
+
+  return <NoteContext.Provider value= {{notes, setNotes}}>
         {props.children}
     </NoteContext.Provider>
  
